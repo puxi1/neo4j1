@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>js</title>
+  <link rel="stylesheet" type="text/css" href="">
+</head>
+<style type="text/css">
+  html,body{height:100%;overflow:hidden;}
+  body,div,h2{margin:0;padding:0;}
+  body{font:12px/1.5 Tahoma;}
+  center{padding-top:10px;}
+  button{cursor:pointer;margin: auto;}
+  #overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
+  #win{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
+  #overlay1{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
+  #win1{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
+  h2{font-size:12px;text-align:right;background:#FC0;border-bottom:3px solid #f90;padding:5px;}
+  h2 span{color:#f90;cursor:pointer;background:#fff;border:1px solid #f90;padding:0 2px;}
+  {text-align-last:justify;text-align:justify;ext-justify:distribute-all-lines;border: 1px solid red;width: 150px;}
+</style>
+<body>
+<center>
+  <button>新增</button>
+  <button>搜索</button>
+</center>
+<div id="overlay" >
+</div>
+<div id="win" style="display:none">
+  <h2>
+    <span id="close">x</span>
+  </h2>
+  <form id="form1">
+    <tr>
+      <td align="right">员工姓名:</td>
+      <td>
+        <input type="text" name="name">
+      </td>
+    </tr>
+    </br>
+    <tr>
+      <td align="right">润和工号:</td>
+      <td>
+        <input type="text" workid="workid">
+      </td>
+    </tr>
+    </br>
+    <tr>
+      <td align="right">所在部门:</td>
+      <td>
+        <input type="text" part="part">
+      </td>
+    </tr>
+    </br>
+    <tr>
+      <td align="right">直属领导:</td>
+      <td>
+        <input type="text" leader="leader">
+      </td>
+    </tr>
+    </br>
+  </form>
+  <button id="sub" type="button" onClick="login()">提交</button>
+  <td></td>
+  <button id="closed" onClick="winclose()">取消</button>
+</div>
+
+
+<div id="overlay1" >
+</div>
+<div id="win1" style="display:none">
+  <h2>
+    <span id="close1">x</span>
+  </h2>
+  <form>
+    <tr>
+      <td align="right">选择搜索内容</td>
+      <td>
+        <select name="text">
+          <option value="0">员工信息</option>
+          <option value="1">员工关系</option>
+        </select>
+      </td>
+    </tr>
+  </form>
+  <button id="submit1" onClick="submit()">确定</button>
+  <td></td>
+  <button id="closed1" onClick="winclose()">取消</button>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    var aBtn = document.getElementsByTagName('button')[0];
+    var oDiv1 = document.getElementById('overlay');
+    var oDiv2 = document.getElementById('win');
+    var oSpan = oDiv2.getElementsByTagName('span')[0];
+    var aBtn1 = document.getElementsByTagName('button')[1];
+
+    aBtn.onclick = function(){
+        oDiv1.style.display = 'block';
+        oDiv2.style.display = 'block';
+    };
+    oSpan.onclick = function(){
+        oDiv1.style.display = 'none';
+        oDiv2.style.display = 'none';
+    };
+
+
+    $("#closed").click(function(){
+        $("#overlay").hide();
+    })
+    $("#closed").click(function(){
+        $("#win").hide();
+    })
+    $("#sub").click(function() {
+        $("#overlay").submit();
+    })
+    // function winclose(){
+    //     var win = document.getElementById('win');
+    //     win.style.display='none';//关闭窗口
+    // }
+
+    function submit(){
+        alert("是否提交");
+        var overlay = document.getElementById('overlay');
+        var win = document.getElementById('win');
+        win.style.display='none';//关闭窗口
+        overlay.style.display='none';
+    }
+
+    function login() {
+        var fields = $('#form1').serializeArray();
+        var obj = {}; //声明一个对象
+        $.each(fields, function(index, field) {
+            obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
+
+        })
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/addsin" ,//url
+            data: JSON.stringify(obj),
+            contentType:"application/json",
+            success: function (obj) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.resultCode == 200) {
+                    alert("SUCCESS");
+                }
+                ;
+            },
+            error : function() {
+                alert("异常！");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
+
