@@ -4,7 +4,7 @@ server:
 neo4j:
   url: bolt://127.0.0.1:7687
   username: neo4j
-  password: hb15594979120
+  password: 123456
 
 spring:
   thymeleaf:

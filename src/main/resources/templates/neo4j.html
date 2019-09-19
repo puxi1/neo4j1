@@ -98,7 +98,7 @@
         </tr>
     </form>
     <button id="submit" onClick="submit()">确定</button>
-    <td></td><nbsp><nbsp><nbsp><nbsp>
+    <td></td>
     <button id="searchclosed" >取消</button>
 </div>
 
@@ -184,12 +184,14 @@
             url: "/addsin" ,//url
             data: JSON.stringify(obj),
             contentType:"application/json",
-            success: function (obj) {
+            success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
-                if (result.resultCode == 200) {
+                if (result) {
                     alert("SUCCESS");
                 }
-
+                else{
+                    alert("fail");
+                }
             },
             error : function() {
                 alert("异常！");
