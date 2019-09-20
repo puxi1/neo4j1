@@ -22,8 +22,12 @@
         button{cursor:pointer;margin: auto;}
         #overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
         #searchoverlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
+        #infooverlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
+        #reloverlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
         #win{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
         #searchwin{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
+        #infowin{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
+        #relwin{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
         h2{font-size:12px;text-align:right;background:#FC0;border-bottom:3px solid #f90;padding:5px;}
         h2 span{color:#f90;cursor:pointer;background:#fff;border:1px solid #f90;padding:0 2px;}
         {text-align-last:justify;text-align:justify;ext-justify:distribute-all-lines;border: 1px solid red;width: 150px;}
@@ -86,20 +90,68 @@
     <h2>
         <span id="searchclose">x</span>
     </h2>
-    <form>
+    <form id="form2">
         <tr>
             <td align="right">选择搜索内容</td>
             <td>
                 <select name="">
-                    <option value="0">员工信息</option>
-                    <option value="1">员工关系</option>
+                    <option value="0" onclick="info()">员工信息</option>
+                    <option value="1" onclick="rel()">员工关系</option>
                 </select>
             </td>
         </tr>
     </form>
-    <button id="submit" onClick="submit()">确定</button>
+<!--    <button id="submit" onClick="submit()">确定</button>-->
+<!--    <td></td>-->
+<!--    <button id="searchclosed" >取消</button>-->
+</div>
+
+
+
+<div id="infooverlay" >
+</div>
+<div id="infowin" style="display:none">
+    <h2>
+        <span id="infoclose">x</span>
+    </h2>
+    <form id="form3">
+        <tr>
+            <td align="right">员工工号:</td>
+            <td>
+                <input type="text" name="workid">
+            </td>
+        </tr>
+    </form>
+    <button id="infosubmit" onClick="infologin()">确定</button>
     <td></td>
-    <button id="searchclosed" >取消</button>
+    <button id="infoclosed" >取消</button>
+</div>
+
+
+
+<div id="reloverlay" >
+</div>
+<div id="relwin" style="display:none">
+    <h2>
+        <span id="relclose">x</span>
+    </h2>
+    <form id="form4">
+        <tr>
+            <td align="right">员工工号:</td>
+            <td>
+                <input type="text" name="workid">
+            </td>
+        </tr>
+        <tr>
+            <td align="right">关系员工工号:</td>
+            <td>
+                <input type="text" name="workid">
+            </td>
+        </tr>
+    </form>
+    <button id="relsubmit" onClick="rellogin()">确定</button>
+    <td></td>
+    <button id="relclosed" >取消</button>
 </div>
 
 
@@ -112,8 +164,16 @@
     var oDiv2 = document.getElementById('win');
     var oDiv3 = document.getElementById('searchoverlay');
     var oDiv4 = document.getElementById('searchwin');
+    var oDiv5 = document.getElementById('infooverlay');
+    var oDiv6 = document.getElementById('infowin');
+    var oDiv7 = document.getElementById('reloverlay');
+    var oDiv8 = document.getElementById('relwin');
     var oSpan = oDiv2.getElementsByTagName('span')[0];
     var oSpan1 = document.getElementById('searchclose');
+    var oSpan2 = document.getElementById('infoclose');
+    var oSpan3 = document.getElementById('relclose');
+
+
 
 
     aBtn.onclick = function(){
@@ -131,6 +191,18 @@
     oSpan1.onclick = function(){
         oDiv3.style.display = 'none';
         oDiv4.style.display = 'none';
+    };
+    oSpan2.onclick = function(){
+        oDiv3.style.display = 'none';
+        oDiv4.style.display = 'none';
+        oDiv5.style.display = 'none';
+        oDiv6.style.display = 'none';
+    };
+    oSpan3.onclick = function(){
+        oDiv3.style.display = 'none';
+        oDiv4.style.display = 'none';
+        oDiv7.style.display = 'none';
+        oDiv8.style.display = 'none';
     };
 
 
@@ -153,6 +225,38 @@
         $("#searchoverlay").submit();
     });
 
+    $("#infoclosed").click(function(){
+        $("#infooverlay").hide();
+        $("#searchoverlay").hide();
+    });
+    $("#infoclosed").click(function(){
+        $("#infowin").hide();
+        $("#searchwin").hide();
+    });$("#relclosed").click(function(){
+        $("#reloverlay").hide();
+        $("#searchoverlay").hide();
+    });
+    $("#relclosed").click(function(){
+        $("#relwin").hide();
+        $("#searchwin").hide();
+    });
+
+
+    function info(){
+        alert("是否确定");
+        var infooverlay = document.getElementById('infooverlay');
+        var infowin = document.getElementById('infowin');
+        infowin.style.display='block';//显示窗口
+        infooverlay.style.display='block';
+    }
+
+    function rel(){
+        alert("是否确定");
+        var infooverlay = document.getElementById('reloverlay');
+        var infowin = document.getElementById('relwin');
+        relwin.style.display='block';//显示窗口
+        reloverlay.style.display='block';
+    }
 
 
     function submit(){
@@ -161,6 +265,14 @@
         var searchwin = document.getElementById('searchwin');
         searchwin.style.display='none';//关闭窗口
         searchoverlay.style.display='none';
+        var infooverlay = document.getElementById('infooverlay');
+        var infowin = document.getElementById('infowin');
+        infowin.style.display='none';//关闭窗口
+        infooverlay.style.display='none';
+        var reloverlay = document.getElementById('reloverlay');
+        var relwin = document.getElementById('relwin');
+        relwin.style.display='none';//关闭窗口
+        reloverlay.style.display='none';
     }
     function login() {
         alert("是否提交");
@@ -170,6 +282,82 @@
         overlay.style.display='none';
 
         var fields = $('#form1').serializeArray();
+        var obj = {}; //声明一个对象
+        $.each(fields, function(index, result) {
+            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
+
+        });
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/addsin" ,//url
+            data: JSON.stringify(obj),
+            // data:$('#form1').serializeArray(),
+            async:false,
+            contentType:"application/json",
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.resultCode == 200) {
+                    alert("SUCCESS");
+                }
+            },
+            error : function() {
+                alert("异常！");
+                win.style.display='none';//关闭窗口
+                overlay.style.display='none';
+            }
+        });
+    }
+
+
+
+    function infologin() {
+        alert("是否提交");
+        var overlay = document.getElementById('overlay');
+        var win = document.getElementById('win');
+        win.style.display='none';//关闭窗口
+        overlay.style.display='none';
+
+        var fields = $('#form3').serializeArray();
+        var obj = {}; //声明一个对象
+        $.each(fields, function(index, result) {
+            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
+
+        });
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/addsin" ,//url
+            data: JSON.stringify(obj),
+            // data:$('#form1').serializeArray(),
+            async:false,
+            contentType:"application/json",
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.resultCode == 200) {
+                    alert("SUCCESS");
+                }
+            },
+            error : function() {
+                alert("异常！");
+                win.style.display='none';//关闭窗口
+                overlay.style.display='none';
+            }
+        });
+    }
+
+
+
+    function rellogin() {
+        alert("是否提交");
+        var overlay = document.getElementById('overlay');
+        var win = document.getElementById('win');
+        win.style.display='none';//关闭窗口
+        overlay.style.display='none';
+
+        var fields = $('#form4').serializeArray();
         var obj = {}; //声明一个对象
         $.each(fields, function(index, result) {
             obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
