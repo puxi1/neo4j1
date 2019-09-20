@@ -42,7 +42,7 @@ public class TestController {
     public Map<String, Object> search2(@RequestParam(value = "name") String name){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
-        String cql = "match q=(m{name: "+name+"})-[]-(),p=(n:A{name: "+name+"})-[]-()-[]-() return q";
+        String cql = "match q=(m{name: \""+name+"\"})-[]-(),p=(n:A{name: "+name+"})-[]-()-[]-() return q";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         neo4jUtil.getList(cql,nodeList);
         retMap.put("nodeList",nodeList);
@@ -69,7 +69,7 @@ public class TestController {
             @RequestParam(value = "name2") String name2){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
-        String cql = "MATCH (p1:Person {name: "+name1+"}),(p2:Person{name: "+name2+"}),\n" +
+        String cql = "MATCH (p1:Person {name: \""+name1+"\"}),(p2:Person{name: \""+name2+"\"}),\n" +
                 "p=shortestpath((p1)-[*..10]-(p2)) RETURN p";
         //待返回的值，与cql return后的值顺序对应
         Set<Map<String ,Object>> nodeList = new HashSet<>();
@@ -91,7 +91,7 @@ public class TestController {
     }
 
     @GetMapping("addrsp")
-    public void addrsp(){
+    public void addrsp(@RequestBody Person person1,@RequestBody Person person2,@RequestParam(value = "relationship") String rsp){
         //创建单个节点
         //String cql = "create (:Person{name:\"康康\"})";
         //创建多个节点
@@ -99,7 +99,7 @@ public class TestController {
         //根据已有节点创建关系
         //String cql = "match (n:Person{name:\"李雷\"}),(m:Person{name:\"小明\"}) create (n)-[r:friendRelation]->(m)";
         //同时创建节点和关系
-        String cql = "create (:Person{name:\"张三\"})-[r:friendRelation]->(:Person{name:\"王五\"})";
+        String cql = "create (:Person{name:\""+person1.getName()+"\"})-[r:"+rsp+"]->(:Person{name:\""+person2+"\"})";
         neo4jUtil.add(cql);
     }
 
@@ -108,7 +108,7 @@ public class TestController {
 //    public boolean addsin(){
         //创建单个节点
 //        String cql = "create (:Person{name:\"张三\"})";
-        String cql = "create (:Person{name:\""+person.getName()+"\"})";
+        String cql = "create (:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",leader: \""+person.getLeader()+"\"})";
         //创建多个节点
         //String cql = "create (:Person{name:\"李雷\"}) create (:Person{name:\"小明\"})";
         //根据已有节点创建关系

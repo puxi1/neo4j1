@@ -17,7 +17,7 @@ public class Person {
     private Long id;
 
     private String name;
-    private Integer workid;
+    private Long workid;
     private String part;
     private String leader;
 
@@ -34,7 +34,7 @@ public class Person {
 
     public Person(){}
 
-    public Person(String name, Integer workid, String part, String leader) {
+    public Person(String name, Long workid, String part, String leader) {
         this.name = name;
         this.workid = workid;
         this.part = part;
@@ -67,11 +67,11 @@ public class Person {
         this.name = name;
     }
 
-    public Integer getWorkid() {
+    public Long getWorkid() {
         return workid;
     }
 
-    public void setWorkid(Integer workid) {
+    public void setWorkid(Long workid) {
         this.workid = workid;
     }
 

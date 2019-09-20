@@ -55,21 +55,21 @@
         <tr>
             <td align="right">润和工号:</td>
             <td>
-                <input type="text" workid="workid">
+                <input type="text" name="workid">
             </td>
         </tr>
         </br>
         <tr>
             <td align="right">所在部门:</td>
             <td>
-                <input type="text" part="part">
+                <input type="text" name="part">
             </td>
         </tr>
         </br>
         <tr>
             <td align="right">直属领导:</td>
             <td>
-                <input type="text" leader="leader">
+                <input type="text" name="leader">
             </td>
         </tr>
         </br>
@@ -190,11 +190,13 @@
             data: JSON.stringify(obj),
             contentType:"application/json",
             success: function (result) {
-                console.log(result);//打印服务端返回的数据(调试用)
-                if (result.resultCode == 200) {
+                if (result) {
+                    parent.location.reload();
                     alert("SUCCESS");
                 }
-
+                else{
+                    alert("出错");
+                }
             },
             error : function() {
                 alert("异常！");
@@ -230,7 +232,7 @@
             async:false,
             success: function(ret) {
                 if(ret){
-                    createNetwork({nodes:ret.nodeList});
+                    createNetwork({nodes:ret.nodeList,edges:ret.edgeList});
                 }else{
                     layer.msg("查询失败");
                 }
