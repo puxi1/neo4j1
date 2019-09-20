@@ -21,16 +21,17 @@ public class Person {
     private String part;
     private String leader;
 
-    public Set<Person> getFriends() {
-        return friends;
-    }
-
-    public void setFriends(Set<Person> friends) {
-        this.friends = friends;
-    }
 
     @Relationship(type = "FRIENDSHIP",direction = Relationship.UNDIRECTED)
-    private Set<Person> friends;
+    private Set<Person> relation;
+
+    public Set<Person> getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Set<Person> relation) {
+        this.relation = relation;
+    }
 
     public Person(){}
 
@@ -41,15 +42,15 @@ public class Person {
         this.leader = leader;
     }
 
-    public void makeNewFriend(Person person){
-        if (friends==null){
-            friends = new HashSet<>();
-        }
-        if (friends.contains(person)){
-            return;
-        }
-        friends.add(person);
-    }
+//    public void makeNewFriend(Person person){
+//        if (friends==null){
+//            friends = new HashSet<>();
+//        }
+//        if (friends.contains(person)){
+//            return;
+//        }
+//        friends.add(person);
+//    }
 
     public Long getId() {
         return id;
