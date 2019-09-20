@@ -74,7 +74,7 @@
         </tr>
         </br>
     </form>
-    <button id="sub" type="button" onClick="login()">提交</button>
+    <input type="button" id="sub" name="btn" value="提交" onclick="login()"/>
     <td></td>
     <button id="closed" >取消</button>
 </div>
@@ -154,13 +154,6 @@
     });
 
 
-    function submit(){
-        alert("是否提交");
-        var overlay = document.getElementById('overlay');
-        var win = document.getElementById('win');
-        win.style.display='none';//关闭窗口
-        overlay.style.display='none';
-    }
 
     function submit(){
         alert("是否确定");
@@ -169,33 +162,32 @@
         searchwin.style.display='none';//关闭窗口
         searchoverlay.style.display='none';
     }
-
     function login() {
         alert("是否提交");
         var overlay = document.getElementById('overlay');
         var win = document.getElementById('win');
         win.style.display='none';//关闭窗口
         overlay.style.display='none';
+
         var fields = $('#form1').serializeArray();
         var obj = {}; //声明一个对象
-        $.each(fields, function(index, field) {
-            obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
+        $.each(fields, function(index, result) {
+            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
 
-        })
+        });
         $.ajax({
             //几个参数需要注意一下
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "/addsin" ,//url
             data: JSON.stringify(obj),
+            // data:$('#form1').serializeArray(),
+            async:false,
             contentType:"application/json",
             success: function (result) {
-                if (result) {
-                    parent.location.reload();
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.resultCode == 200) {
                     alert("SUCCESS");
-                }
-                else{
-                    alert("出错");
                 }
             },
             error : function() {
@@ -205,11 +197,6 @@
             }
         });
     }
-
-
-
-
-
 
 
 
@@ -232,7 +219,7 @@
             async:false,
             success: function(ret) {
                 if(ret){
-                    createNetwork({nodes:ret.nodeList,edges:ret.edgeList});
+                    createNetwork({nodes:ret.nodeList});
                 }else{
                     layer.msg("查询失败");
                 }
