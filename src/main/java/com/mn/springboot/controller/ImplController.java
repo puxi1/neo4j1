@@ -39,7 +39,7 @@ public class ImplController {
         return retMap;
     }
 
-    @GetMapping("search2")
+    @PostMapping("search2")
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
