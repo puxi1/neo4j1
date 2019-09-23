@@ -28,18 +28,18 @@ public class ImplController {
         return retMap;
     }
 
-    @GetMapping("search1")
-    public Map<String, Object> search1(@RequestBody Person person){
-        Map<String, Object> retMap = new HashMap<>();
-        //cql语句
-        String cql = "match q=(m{workid: "+person.getWorkid()+"})-[]-() return q";
-        Set<Map<String ,Object>> nodeList = new HashSet<>();
-        neo4jUtil.getList(cql,nodeList);
-        retMap.put("nodeList",nodeList);
-        return retMap;
-    }
+//    @PostMapping("search1")
+//    public Map<String, Object> search1(@RequestBody Person person){
+//        Map<String, Object> retMap = new HashMap<>();
+//        //cql语句
+//        String cql = "match q=(m{workid: "+person.getWorkid()+"})-[]-() return q";
+//        Set<Map<String ,Object>> nodeList = new HashSet<>();
+//        neo4jUtil.getList(cql,nodeList);
+//        retMap.put("nodeList",nodeList);
+//        return retMap;
+//    }
 
-    @PostMapping("search2")
+    @GetMapping("search2")
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
@@ -51,10 +51,11 @@ public class ImplController {
     }
 
     @GetMapping("getPath")
-    public Map<String, Object> getPath(String id){
+    public Map<String, Object> getPath(){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句  ID()可以获取节点自动生成的id
-        String cql = "match l=(m)-[]-(n) where ID(m)="+id+" return l";
+//        String cql = "match l=(m)-[]-(n) where ID(m)="+id+" return l";
+        String cql = "match l=(m)-[]-(n) return l";
         //待返回的值，与cql return后的值顺序对应
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         Set<Map<String ,Object>> edgeList = new HashSet<>();
