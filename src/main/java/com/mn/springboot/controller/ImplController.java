@@ -100,7 +100,7 @@ public class ImplController {
     //添加新用户节点
     @PostMapping("addsin")
     public boolean addsin(@RequestBody Person person){
-        String cql = "match (m:Department{name:\""+person.getPart()+"\"}) " +
+        String cql = "match (m:Department{partname:\""+person.getPart()+"\"}) " +
                 " merge(n:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",leader: \""+person.getLeader()+"\"})" +
                 "-[:belong]->(m)";
         try{
