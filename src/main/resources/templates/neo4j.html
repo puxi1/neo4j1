@@ -40,9 +40,9 @@
 <input type="checkbox" name="checkbox" checked value="Movie"/>Movie
 <div id="network_id" class="network"></div><!-- 拓扑图容器-->
 <center>
-    <button>新增</button>
+    <button>新增人员</button>
     <button>搜索</button>
-    <button>部门</button>
+    <button>新增部门</button>
 </center>
 <div id="overlay" >
 </div>
@@ -168,7 +168,7 @@
         <tr>
             <td align="right">部门名称:</td>
             <td>
-                <input type="text" name="name">
+                <input type="text" name="partname">
             </td>
         </tr>
     </form>
@@ -584,7 +584,7 @@
                         background = "#FFD86E";
                     }
                     //电影
-                    else if(node.title && node.title!=""){
+                    if(node.partname && node.partname!=""){
                         background = "#6DCE9E";
                     }
                     //拼接返回的结果显示在图上
