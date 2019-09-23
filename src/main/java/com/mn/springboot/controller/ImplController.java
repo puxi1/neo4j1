@@ -114,7 +114,7 @@ public class ImplController {
     //创建新部门节点
     @PostMapping("addPart")
     public boolean addPart(@RequestBody Part part){
-        String cql = "create (:Department{name:\""+part.getName()+"\"})";
+        String cql = "create (:Department{name:\""+part.getPartname()+"\"})";
         try{
             neo4jUtil.add(cql);
             return true;
