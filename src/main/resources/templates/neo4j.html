@@ -125,7 +125,7 @@
             </td>
         </tr>
     </form>
-    <button id="infosubmit" onclick="find().init()">确定</button>
+    <button id="infosubmit" onclick="infologin()">确定</button>
     <td></td>
     <button id="infoclosed" >取消</button>
 </div>
@@ -290,15 +290,15 @@
         var infowin = document.getElementById('infowin');
         infowin.style.display='block';//显示窗口
         infooverlay.style.display='block';
-    }
+    };
 
     function rel(){
         alert("是否确定");
-        var infooverlay = document.getElementById('reloverlay');
-        var infowin = document.getElementById('relwin');
+        var reloverlay = document.getElementById('reloverlay');
+        var relwin = document.getElementById('relwin');
         relwin.style.display='block';//显示窗口
         reloverlay.style.display='block';
-    }
+    };
 
 
 
@@ -465,7 +465,7 @@
 
 
 
-    拓扑
+    //拓扑
     var network;
     // 创建节点对象
     var nodes;
@@ -475,6 +475,7 @@
     var nodeExtendArr = new Array();
 
     $(function () {
+        alert('0');
         init();
         //修改初始缩放
         network.moveTo({scale: 0.8});
@@ -555,121 +556,17 @@
                 }
             }
         };
+        alert('0');
         network = new vis.Network(container, data, options);
+        console.log(network);
     }
 
 
 
-    var network;
-    // 创建节点对象
-    var nodes;
-    // 创建连线对象
-    var edges;
-    // 已扩展的节点
-    var nodeExtendArr = new Array();
-
-    var find=(function () {
-        init();
-        //修改初始缩放
-        network.moveTo({scale: 0.8});
-        var infooverlay = document.getElementById('infooverlay');
-        var infowin = document.getElementById('infowin');
-        infowin.style.display='none';//关闭窗口
-        infooverlay.style.display='none';
-        var searchoverlay = document.getElementById('searchoverlay');
-        var searchwin = document.getElementById('searchwin');
-        searchwin.style.display='none';//关闭窗口
-        searchoverlay.style.display='none';
-
-        var fields = $('#form3').serializeArray();
-        var obj = {}; //声明一个对象
-        $.each(fields, function(index, result) {
-            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
-
-        });
-
-        //先初始化一个节点
-        $.ajax({
-            url:'/search2',
-            async:false,
-            success: function(ret) {
-                if(ret){
-                    createNetwork({nodes:ret.nodeList});
-                }else{
-                    layer.msg("查询失败");
-                }
-            }
-        });
-        network.on("dragEnd", function(params){
-            if (params.nodes&&params.nodes.length > 0){
-                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
-            }
-        });
-        //双击扩展
-        network.on("click",function (params) {
-            // 取出当前节点在Vis的节点ID
-            var nodeId = params.nodes[0];
-            if(nodeExtendArr.indexOf(nodeId) != -1){
-                layer.msg("该节点已经扩展");
-            }else{
-                getData(nodeId);
-            }
-        });
-        return {
-            find:find,
-            init: init
-        };
-    });
-    find().init();
 
 
-    function init(){
 
-        // 创建节点对象
-        nodes = new vis.DataSet([]);
-        // 创建连线对象
-        edges = new vis.DataSet([]);
-        // 创建一个网络拓扑图  不要使用jquery获取元素
-        var container = document.getElementById('network_id');
-        var data = {nodes: nodes, edges: edges};
-        //全局设置，每个节点和关系的属性会覆盖全局设置
-        var options = {
-            //设置节点形状
-            nodes:{
-                shape: 'dot',//采用远点的形式
-                size: 30,
-                font:{
-                    face:'Microsoft YaHei'
-                }
-            },
-            // 设置关系连线
-            edges:{
-                font:{
-                    face:'Microsoft YaHei'
-                }
-            },
-            //设置节点的相互作用
-            interaction: {
-                //鼠标经过改变样式
-                hover: true
-                //设置禁止缩放
-                //zoomView:false
-            },
-            //力导向图效果
-            physics: {
-                enabled: true,
-                barnesHut: {
-                    gravitationalConstant: -4000,
-                    centralGravity: 0.3,
-                    springLength: 120,
-                    springConstant: 0.04,
-                    damping: 0.09,
-                    avoidOverlap: 0
-                }
-            }
-        };
-        network = new vis.Network(container, data, options);
-    }
+
 
 
 
