@@ -63,6 +63,7 @@ public class TestController {
         return retMap;
     }
 
+    //获取最短路径
     @GetMapping("getShortPath")
     public Map<String, Object> getShortPath(
             @RequestBody Person person1,
@@ -89,9 +90,9 @@ public class TestController {
     }
 
     //创建非默认关系
-    @GetMapping("addrsp")
-    public void addrsp(@RequestBody Person person1,@RequestBody Person person2){
-        String cql = "create (:Person{workid:\""+person1.getWorkid()+"\"})-[r:"+person1.getRelation()+"]->(:Person{workid:\""+person2.getWorkid()+"\"})";
+    @PostMapping("addrsp")
+    public void addrsp(@RequestBody Person person1,@RequestBody Person person2,@RequestParam(value = "relation") String relation){
+        String cql = "create (:Person{workid:\""+person1.getWorkid()+"\"})-[r:"+relation+"]->(:Person{workid:\""+person2.getWorkid()+"\"})";
         neo4jUtil.add(cql);
     }
 
@@ -121,7 +122,7 @@ public class TestController {
         }
     }
 
-    @GetMapping("delete")
+    @PostMapping("delete")
     public boolean delete(@RequestBody Person person){
         String cql = "match (n:Person{workid: \""+person.getWorkid()+"\"})-[r]-() delete r";
         try{
