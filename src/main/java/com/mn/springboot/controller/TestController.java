@@ -1,5 +1,6 @@
 package com.mn.springboot.controller;
 
+import com.mn.springboot.entity.Part;
 import com.mn.springboot.entity.Person;
 import com.mn.springboot.utils.Neo4jUtil;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -111,8 +112,8 @@ public class TestController {
 
     //创建新部门节点
     @PostMapping("addPart")
-    public boolean addPart(@RequestParam(value = "name") String name){
-        String cql = "create (:Department{name:\""+name+"\"})";
+    public boolean addPart(@RequestBody Part part){
+        String cql = "create (:Department{name:\""+part.getName()+"\"})";
         try{
             neo4jUtil.add(cql);
             return true;
