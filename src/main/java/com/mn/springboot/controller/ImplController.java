@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-public class TestController {
+public class ImplController {
     @Autowired
     private Neo4jUtil neo4jUtil;
 
@@ -100,9 +100,9 @@ public class TestController {
     //添加新用户节点
     @PostMapping("addsin")
     public boolean addsin(@RequestBody Person person){
-        String cql = "match (m:Department{name:\""+person.getPart()+"\"})," +
-                "(n:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",leader: \""+person.getLeader()+"\"})" +
-                " create (n)-[r:belong]->(m)";
+        String cql = "match (m:Department{name:\""+person.getPart()+"\"}) " +
+                " merge(n:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",leader: \""+person.getLeader()+"\"})" +
+                "-[:belong]->(m)";
         try{
             neo4jUtil.add(cql);
             return true;
@@ -125,7 +125,7 @@ public class TestController {
 
     @PostMapping("delete")
     public boolean delete(@RequestBody Person person){
-        String cql = "match (n:Person{workid: \""+person.getWorkid()+"\"})-[r]-() delete r";
+        String cql = "match (n:Person{workid: \""+person.getWorkid()+"\"})-[r]-() delete r,n";
         try{
             neo4jUtil.add(cql);
             return true;

@@ -326,6 +326,7 @@
             success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
                 if (result) {
+                    parent.location.reload();
                     alert("SUCCESS");
                 } else {
                     alert("所属部门不存在");
