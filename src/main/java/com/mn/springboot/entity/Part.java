@@ -1,7 +1,7 @@
 package com.mn.springboot.entity;
 
 public class Part {
-    String name;
+    String partname;
     String superior;
     String leader;
 
@@ -21,11 +21,11 @@ public class Part {
         this.superior = superior;
     }
 
-    public String getName() {
-        return name;
+    public String getPartname() {
+        return partname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPartname(String partname) {
+        this.partname = partname;
     }
 }
