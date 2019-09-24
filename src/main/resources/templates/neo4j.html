@@ -600,9 +600,11 @@
                         background = "#6DCE9E";
                     }
                     //拼接返回的结果显示在图上
-                    var label = "";
-                    for(var n in node){
-                        label += n + ":" + node[n] + "\n";
+                    var label="";
+                    if(node.partname == undefined){
+                        label="姓名"+ ":" + node.name + "\n";
+                    } else {
+                        label="部门"+ ":" + node.partname + "\n";
                     }
                     nodes.add({
                         id: node.nodeId,
@@ -610,7 +612,7 @@
                         color:{
                             background:background
                         }
-                    });
+                    })
                 }
             }
         }
