@@ -601,14 +601,19 @@
                     }
                     //拼接返回的结果显示在图上
                     var label="";
+                    var title="";
                     if(node.partname == undefined){
                         label="姓名"+ ":" + node.name + "\n";
                     } else {
                         label="部门"+ ":" + node.partname + "\n";
                     }
+                    for(var n in node){
+                        title += n + ":" + node[n] + "\n"+"&#10;";
+                    }
                     nodes.add({
                         id: node.nodeId,
                         label: label,
+                        title:title,
                         color:{
                             background:background
                         }
