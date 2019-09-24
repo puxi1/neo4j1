@@ -97,9 +97,10 @@
         <tr>
             <td align="right">选择搜索内容</td>
             <td>
-                <select name="">
-                    <option value="0" onclick="info()">员工信息</option>
-                    <option value="1" onclick="rel()">员工关系</option>
+                <select id="contentSelect" name="">
+                    <option value="0">请选择</option>
+                    <option value="1">员工信息</option>
+                    <option value="2">员工关系</option>
                 </select>
             </td>
         </tr>
@@ -284,26 +285,21 @@
     });
 
 
-    function info(){
-        alert("是否确定");
-        var infooverlay = document.getElementById('infooverlay');
-        var infowin = document.getElementById('infowin');
-        infowin.style.display='block';//显示窗口
-        infooverlay.style.display='block';
-    };
+    $("#contentSelect").change(function(data){
+        var value = $("#contentSelect option:selected").attr("value");
+        if(value == 1){
+            $("#infowin").show();
+            $("#infooverlay").show();
+        } else if(value == 2){
+            $("#relwin").show();
+            $("#reloverlay").show();
+        }
+    });
 
-    function rel(){
-        alert("是否确定");
-        var reloverlay = document.getElementById('reloverlay');
-        var relwin = document.getElementById('relwin');
-        relwin.style.display='block';//显示窗口
-        reloverlay.style.display='block';
-    };
 
 
 
     function login() {
-        alert("是否提交");
         var overlay = document.getElementById('overlay');
         var win = document.getElementById('win');
         win.style.display = 'none';//关闭窗口
@@ -328,8 +324,6 @@
                 if (result) {
                     parent.location.reload();
                     alert("SUCCESS");
-                } else {
-                    alert("所属部门不存在");
                 }
             },
             error: function () {
@@ -341,7 +335,6 @@
     }
 
     function deplogin() {
-            alert("是否提交");
             var depoverlay = document.getElementById('depoverlay');
             var depwin = document.getElementById('depwin');
             depwin.style.display='none';//关闭窗口
@@ -426,7 +419,6 @@
 
 
     function rellogin() {
-        alert("是否提交");
         var reloverlay = document.getElementById('reloverlay');
         var relwin = document.getElementById('relwin');
         relwin.style.display='none';//关闭窗口
@@ -475,7 +467,6 @@
     var nodeExtendArr = new Array();
 
     $(function () {
-        alert('0');
         init();
         //修改初始缩放
         network.moveTo({scale: 0.8});
@@ -499,7 +490,7 @@
             }
         });
         //双击扩展
-        network.load(function (params) {
+        network.on(function (params) {
             // 取出当前节点在Vis的节点ID
             var nodeId = params.nodes[0];
             if(nodeExtendArr.indexOf(nodeId) != -1){
@@ -556,7 +547,6 @@
                 }
             }
         };
-        alert('0');
         network = new vis.Network(container, data, options);
         console.log(network);
     }
