@@ -322,7 +322,7 @@
             success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
                 if (result) {
-                    // parent.location.reload();
+                    parent.location.reload();
                     alert("SUCCESS");
                 }
             },
@@ -375,6 +375,9 @@
 
     function infologin() {
         network.moveTo({scale: 0.8});
+        var tipMsg = layer.msg('数据加载中，请稍等...', {icon: 16,shade:[0.1,'#000'],time:0,offset:'250px'});
+        //该节点已扩展
+        // nodeExtendArr.push(id);
         var infooverlay = document.getElementById('infooverlay');
         var infowin = document.getElementById('infowin');
         infowin.style.display='none';//关闭窗口
@@ -399,9 +402,10 @@
             async:false,
             contentType:"application/json",
             success: function (result) {
-                console.log(result);//打印服务端返回的数据(调试用)
+                layer.close(tipMsg);
                 if (result) {
-                    alert("SUCCESS");
+                    init();
+                    createNetwork({nodes:result.nodeList,edges:result.edgeList});
                 }
             },
             error : function() {
@@ -410,7 +414,11 @@
                 overlay.style.display='none';
             }
         });
-
+        network.on("dragEnd", function(params){
+            if (params.nodes&&params.nodes.length > 0){
+                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
+            }
+        });
     }
 
 

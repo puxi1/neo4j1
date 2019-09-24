@@ -43,10 +43,16 @@ public class ImplController {
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
-        String cql = "match l=(n)--()--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
+//        String cql1 = "match (n)--(l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return n";
+//        String cql2 = "match (l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
+        String cql3 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n)--(:Person) return l";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
-        neo4jUtil.getList(cql,nodeList);
+        Set<Map<String ,Object>> edgeList = new HashSet<>();
+//        neo4jUtil.getList(cql1,nodeList);
+//        neo4jUtil.getList(cql2,nodeList);
+        neo4jUtil.getPathList(cql3,nodeList,edgeList);
         retMap.put("nodeList",nodeList);
+        retMap.put("edgeList",edgeList);
         return retMap;
     }
 
