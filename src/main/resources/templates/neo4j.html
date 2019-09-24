@@ -499,7 +499,7 @@
             }
         });
         //双击扩展
-        network.on("click",function (params) {
+        network.load(function (params) {
             // 取出当前节点在Vis的节点ID
             var nodeId = params.nodes[0];
             if(nodeExtendArr.indexOf(nodeId) != -1){

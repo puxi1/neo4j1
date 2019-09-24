@@ -39,11 +39,11 @@ public class ImplController {
 //        return retMap;
 //    }
 
-    @GetMapping("search2")
+    @PostMapping("search2")
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
-        String cql = "match q=(m{workid: \""+person.getWorkid()+"\"})-[]-(),p=(n:A{workid: "+person.getWorkid()+"})-[]-()-[]-() return q";
+        String cql = "match l=(n)--()--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         neo4jUtil.getList(cql,nodeList);
         retMap.put("nodeList",nodeList);
