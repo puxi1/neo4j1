@@ -551,6 +551,7 @@
             }
         };
         network = new vis.Network(container, data, options);
+        console.log(network);
     }
 
 
@@ -608,7 +609,7 @@
                         label="部门"+ ":" + node.partname + "\n";
                     }
                     for(var n in node){
-                        title += n + ":" + node[n] + "\n"+"&#10;";
+                        title += n + ":" + node[n] +"\n";
                     }
                     nodes.add({
                         id: node.nodeId,
