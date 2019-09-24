@@ -467,6 +467,7 @@
     $(function () {
         init();
         //修改初始缩放
+        getData();
         network.moveTo({scale: 0.8});
 
 
@@ -550,8 +551,6 @@
             }
         };
         network = new vis.Network(container, data, options);
-        getData();
-        console.log(network);
     }
 
 
@@ -613,8 +612,6 @@
                         }
                     });
                 }
-            }else{
-                layer.msg("无扩展信息");
             }
         }
         if(param.edges && param.edges.length>0){
