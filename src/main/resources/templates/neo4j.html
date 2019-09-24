@@ -322,7 +322,7 @@
             success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
                 if (result) {
-                    parent.location.reload();
+                    // parent.location.reload();
                     alert("SUCCESS");
                 }
             },
@@ -398,12 +398,10 @@
             data: JSON.stringify(obj),
             async:false,
             contentType:"application/json",
-            success: function (ret) {
+            success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
-                if(ret){
-                    createNetwork({nodes:ret.nodeList});
-                }else{
-                    layer.msg("查询失败");
+                if (result) {
+                    alert("SUCCESS");
                 }
             },
             error : function() {
@@ -490,7 +488,7 @@
             }
         });
         //双击扩展
-        network.on(function (params) {
+        network.on("click",function (params) {
             // 取出当前节点在Vis的节点ID
             var nodeId = params.nodes[0];
             if(nodeExtendArr.indexOf(nodeId) != -1){
