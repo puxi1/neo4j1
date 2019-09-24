@@ -488,15 +488,19 @@
             }
         });
         //双击扩展
-        network.on("click",function (params) {
-            // 取出当前节点在Vis的节点ID
-            var nodeId = params.nodes[0];
-            if(nodeExtendArr.indexOf(nodeId) != -1){
-                layer.msg("该节点已经扩展");
-            }else{
-                getData(nodeId);
-            }
-        });
+        // network.on("click",function (params) {
+        //     console.log(params);
+        //     console.log(params.nodes);
+        //     // 取出当前节点在Vis的节点ID
+        //     var nodeId = params.nodes[0];
+        //     console.log(params.nodes[0]);
+        //     console.log(nodeId);
+        //     if(nodeExtendArr.indexOf(nodeId) != -1){
+        //         layer.msg("该节点已经扩展");
+        //     }else{
+        //         getData(nodeId);
+        //     }
+        // });
     });
 
 
@@ -546,29 +550,22 @@
             }
         };
         network = new vis.Network(container, data, options);
+        getData();
         console.log(network);
     }
 
 
 
-
-
-
-
-
-
-
-
     //获取id扩展后的数据
-    function getData(id){
+    function getData(){
         var tipMsg = layer.msg('数据加载中，请稍等...', {icon: 16,shade:[0.1,'#000'],time:0,offset:'250px'});
         //该节点已扩展
-        nodeExtendArr.push(id);
+        // nodeExtendArr.push(id);
         $.ajax({
             url:'/getPath',
-            data:{
-                id:id //当前节点id
-            },
+            // data:{
+            //     id:id //当前节点id
+            // },
             success: function(ret) {
                 layer.close(tipMsg);
                 if(ret){
