@@ -2,6 +2,7 @@ package com.mn.springboot.controller;
 
 import com.mn.springboot.entity.Part;
 import com.mn.springboot.entity.Person;
+import com.mn.springboot.entity.Relation;
 import com.mn.springboot.utils.Neo4jUtil;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,14 @@ public class ImplController {
         //cql语句
 //        String cql1 = "match (n)--(l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return n";
 //        String cql2 = "match (l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
-        String cql3 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n)--(:Person) return l";
+        String cql1 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n)--(:Person) return l";
+        String cql2 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n:Person) return l";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         Set<Map<String ,Object>> edgeList = new HashSet<>();
 //        neo4jUtil.getList(cql1,nodeList);
 //        neo4jUtil.getList(cql2,nodeList);
-        neo4jUtil.getPathList(cql3,nodeList,edgeList);
+        neo4jUtil.getPathList(cql1,nodeList,edgeList);
+        neo4jUtil.getPathList(cql2,nodeList,edgeList);
         retMap.put("nodeList",nodeList);
         retMap.put("edgeList",edgeList);
         return retMap;
@@ -72,13 +75,11 @@ public class ImplController {
     }
 
     //获取最短路径
-    @GetMapping("getShortPath")
-    public Map<String, Object> getShortPath(
-            @RequestBody Person person1,
-            @RequestBody Person person2){
+    @PostMapping("getShortPath")
+    public Map<String, Object> getShortPath(@RequestBody Relation relation) {
         Map<String, Object> retMap = new HashMap<>();
         //cql语句
-        String cql = "MATCH (p1:Person {workid: \""+person1.getWorkid()+"\"}),(p2:Person{workid: \""+person2.getWorkid()+"\"}),\n" +
+        String cql = "MATCH (p1:Person {workid: \""+relation.getWorkid1()+"\"}),(p2:Person{workid: \""+relation.getWorkid2()+"\"}),\n" +
                 "p=shortestpath((p1)-[*..10]-(p2)) RETURN p";
         //待返回的值，与cql return后的值顺序对应
         Set<Map<String ,Object>> nodeList = new HashSet<>();

@@ -143,13 +143,13 @@
         <tr>
             <td align="right">员工工号:</td>
             <td>
-                <input type="text" name="workid">
+                <input type="text" name="workid1">
             </td>
         </tr>
         <tr>
             <td align="right">关系员工工号:</td>
             <td>
-                <input type="text" name="workid">
+                <input type="text" name="workid2">
             </td>
         </tr>
     </form>
@@ -429,6 +429,8 @@
         var relwin = document.getElementById('relwin');
         relwin.style.display='none';//关闭窗口
         reloverlay.style.display='none';
+        searchwin.style.display='none';//关闭窗口
+        searchoverlay.style.display='none';
 
         var fields = $('#form4').serializeArray();
         var obj = {}; //声明一个对象
@@ -438,7 +440,7 @@
         });
         $.ajax({
             //几个参数需要注意一下
-            type: "GET",//方法类型
+            type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "/getShortPath" ,//url
             data: JSON.stringify(obj),
@@ -448,7 +450,8 @@
             success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
                 if (result) {
-                    alert("SUCCESS");
+                    init();
+                    createNetwork({nodes:result.nodeList,edges:result.edgeList});
                 }
             },
             error : function() {
@@ -457,8 +460,11 @@
                 overlay.style.display='none';
             }
         });
-
-
+        network.on("dragEnd", function(params){
+            if (params.nodes&&params.nodes.length > 0){
+                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
+            }
+        });
     }
 
 
