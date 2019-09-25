@@ -4,7 +4,6 @@ import com.mn.springboot.entity.Part;
 import com.mn.springboot.entity.Person;
 import com.mn.springboot.entity.Relation;
 import com.mn.springboot.utils.Neo4jUtil;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -109,8 +108,8 @@ public class ImplController {
     @PostMapping("addsin")
     public boolean addsin(@RequestBody Person person){
         String cql = "match (m:Department{partname:\""+person.getPart()+"\"}) " +
-                " merge(n:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",leader: \""+person.getLeader()+"\"})" +
-                "-[:belong]->(m)";
+                " merge(n:Person{name:\""+person.getName()+"\",workid: \""+person.getWorkid()+"\",part: \""+person.getPart()+"\",position: \""+person.getPosition()+"\"})" +
+                "-[:"+person.getPosition()+"]->(m)";
         try{
             neo4jUtil.add(cql);
             return true;
@@ -122,7 +121,8 @@ public class ImplController {
     //创建新部门节点
     @PostMapping("addPart")
     public boolean addPart(@RequestBody Part part){
-        String cql = "merge (:Department{partname:\""+part.getPartname()+"\"})";
+        String cql = "match (m:Department{partname:\""+part.getLeader()+"\"}) " +
+                "merge (:Department{partname:\""+part.getPartname()+"\"})-[:belong]->(m)";
         try{
             neo4jUtil.add(cql);
             return true;
@@ -132,12 +132,14 @@ public class ImplController {
     }
 
     @PostMapping("delete")
-    public boolean delete(@RequestBody Person person){
-        String cql = "match (n:Person{workid: \""+person.getWorkid()+"\"})-[r]-() delete r,n";
+    public boolean delete(String id){
+        String cql1 = "match (n)-[r]-() where ID(n)="+id+" delete r";
+        String cql2 = "match (n) where ID(n)="+id+" delete n";
         try{
-            neo4jUtil.add(cql);
+            neo4jUtil.add(cql1);
+            neo4jUtil.add(cql2);
             return true;
-        }catch (Exception e) {
+        }catch (Exception e){
             return false;
         }
     }

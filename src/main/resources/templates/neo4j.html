@@ -74,9 +74,9 @@
         </tr>
         </br>
         <tr>
-            <td align="right">直属领导:</td>
+            <td align="right">员工职位:</td>
             <td>
-                <input type="text" name="leader">
+                <input type="text" name="position">
             </td>
         </tr>
         </br>
@@ -170,6 +170,10 @@
             <td align="right">部门名称:</td>
             <td>
                 <input type="text" name="partname">
+            </td>
+            <td align="right">所属部门:</td>
+            <td>
+                <input type="text" name="leader">
             </td>
         </tr>
     </form>
@@ -487,37 +491,27 @@
 
         //先初始化一个节点
         $.ajax({
-            url:'/get',
-            async:false,
-            success: function(ret) {
-                if(ret){
-                    createNetwork({nodes:ret.nodeList});
-                }else{
+            url: '/get',
+            async: false,
+            success: function (ret) {
+                if (ret) {
+                    createNetwork({nodes: ret.nodeList});
+                } else {
                     layer.msg("查询失败");
                 }
             }
         });
-        network.on("dragEnd", function(params){
-            if (params.nodes&&params.nodes.length > 0){
-                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
+        network.on("dragEnd", function (params) {
+            if (params.nodes && params.nodes.length > 0) {
+                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
             }
         });
-        //双击扩展
-        // network.on("click",function (params) {
-        //     console.log(params);
-        //     console.log(params.nodes);
-        //     // 取出当前节点在Vis的节点ID
-        //     var nodeId = params.nodes[0];
-        //     console.log(params.nodes[0]);
-        //     console.log(nodeId);
-        //     if(nodeExtendArr.indexOf(nodeId) != -1){
-        //         layer.msg("该节点已经扩展");
-        //     }else{
-        //         getData(nodeId);
-        //     }
-        // });
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            parent.location.reload();
+        });
     });
-
 
     function init(){
 
@@ -591,6 +585,25 @@
         });
     }
 
+    function del(id) {
+        nodeExtendArr.push(id);
+        $.ajax({
+            type: "POST",
+            url:'/delete',
+            data:{
+                id:id //当前节点id
+            },
+
+            success: function(ret) {
+                layer.close(tipMsg);
+                if(ret){
+                    alert("删除成功");
+                }else{
+                    layer.msg("删除失败");
+                }
+            }
+        });
+    }
     //扩展节点 param nodes和relation集合
     function createNetwork(param) {
         //可以试试注释掉去重的方法看看效果
@@ -618,9 +631,9 @@
                     var label="";
                     var title="";
                     if(node.partname == undefined){
-                        label="姓名"+ ":" + node.name + "\n";
+                        label= node.name + "\n";
                     } else {
-                        label="部门"+ ":" + node.partname + "\n";
+                        label= node.partname + "\n";
                     }
                     for(var n in node){
                         if (n !="nodeId"){

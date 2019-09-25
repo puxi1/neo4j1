@@ -19,7 +19,7 @@ public class Person {
     private String name;
     private Long workid;
     private String part;
-    private String leader;
+    private String position;
 
 
     @Relationship(type = "FRIENDSHIP",direction = Relationship.UNDIRECTED)
@@ -35,11 +35,11 @@ public class Person {
 
     public Person(){}
 
-    public Person(String name, Long workid, String part, String leader) {
+    public Person(String name, Long workid, String part, String position) {
         this.name = name;
         this.workid = workid;
         this.part = part;
-        this.leader = leader;
+        this.position = position;
     }
 
 //    public void makeNewFriend(Person person){
@@ -84,12 +84,12 @@ public class Person {
         this.part = part;
     }
 
-    public String getLeader() {
-        return leader;
+    public String getPosition() {
+        return position;
     }
 
-    public void setLeader(String leader) {
-        this.leader = leader;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     @Override
