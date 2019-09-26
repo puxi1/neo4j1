@@ -99,9 +99,14 @@ public class ImplController {
 
     //创建非默认关系
     @PostMapping("addrsp")
-    public void addrsp(@RequestBody Relation relation){
+    public boolean addrsp(@RequestBody Relation relation){
         String cql = "merge (:Person{workid:\""+relation.getWorkid1()+"\"})-[r]->(:Person{workid:\""+relation.getWorkid1()+"\"})";
-        neo4jUtil.add(cql);
+        try{
+            neo4jUtil.add(cql);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     //添加新用户节点
@@ -143,5 +148,15 @@ public class ImplController {
             return false;
         }
     }
-}
 
+    @PostMapping("start")
+    public boolean start(@RequestBody Part part){
+        String cql = "merge (:Department{partname:\""+part.getPartname()+"\"})";
+        try{
+            neo4jUtil.add(cql);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+}
