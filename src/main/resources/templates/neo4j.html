@@ -127,9 +127,9 @@
             </td>
         </tr>
         <br/>
-        <button id="infosubmit" onclick="infologin()">确定</button>
+        <input type="button" id="infosubmit" value="确定" onclick="infologin()"></input>
         <td></td>
-        <button id="infoclosed" >取消</button>
+        <input type="button" id="infoclosed" value="取消"></input>
     </form>
 </div>
 
@@ -156,9 +156,9 @@
             </td>
         </tr>
         <br/>
-        <button id="relsubmit" onClick="rellogin()">确定</button>
+        <input type="button" id="relsubmit" value="确定" onClick="rellogin()"></input>
         <td></td>
-        <button id="relclosed" >取消</button>
+        <input type="button" id="relclosed" value="取消">
     </form>
 </div>
 
@@ -218,16 +218,24 @@
             </td>
         </tr>
         <br/>
-        <button id="relasubmit" onClick="relalogin()">确定</button>
+        <input type="button" id="relasubmit" value="确定" onClick="relalogin()">
         <td></td>
-        <button id="relaclosed" >取消</button>
+        <input type="button" id="relaclosed" value="取消">
     </form>
 </div>
-
+</body>
 
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
+
+
+
+    //拓扑
+
+
+
+
     var aBtn = document.getElementsByTagName('button')[0];
     var aBtn1 = document.getElementsByTagName('button')[1];
     var aBtn2 = document.getElementsByTagName('button')[2];
@@ -250,7 +258,13 @@
     var oSpan3 = document.getElementById('relclose');
     var oSpan4 = document.getElementById('depclose');
     var oSpan5 = document.getElementById('relaclose');
-
+    var network;
+    // 创建节点对象
+    var nodes;
+    // 创建连线对象
+    var edges;
+    // 已扩展的节点
+    var nodeExtendArr = new Array();
 
 
     aBtn.onclick = function(){
@@ -360,7 +374,43 @@
     });
 
 
+    $(function () {
+        var flag1 = $("#searchFlag").val();
+        console.log(flag1);
+        if(flag1 == '2'){
+            return;
+        }
+        init();
+        //修改初始缩放
+        getData();
+        network.moveTo({scale: 0.8});
 
+
+        //先初始化一个节点
+        $.ajax({
+            url: '/get',
+            async: false,
+            success: function (ret) {
+                if (ret) {
+                    createNetwork({nodes: ret.nodeList});
+                } else {
+                    layer.msg("查询失败");
+                }
+            }
+        });
+        network.on("dragEnd", function (params) {
+            if (params.nodes && params.nodes.length > 0) {
+                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
+            }
+        });
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            var truthBeTold = window.confirm("是否确定删除？");
+            console.log(truthBeTold);
+            parent.location.reload();
+        });
+    });
 
     function login() {
         var truthBeLogin = window.confirm("是否确定添加员工？");
@@ -472,24 +522,22 @@
 
 
 
-
     function infologin() {
         network.moveTo({scale: 0.8});
-        var tipMsg = layer.msg('数据加载中，请稍等...', {icon: 16,shade:[0.1,'#000'],time:0,offset:'250px'});
+        var tipMsg = layer.msg('数据加载中，请稍等...', {icon: 16, shade: [0.1, '#000'], time: 0, offset: '250px'});
         //该节点已扩展
         // nodeExtendArr.push(id);
         var infooverlay = document.getElementById('infooverlay');
         var infowin = document.getElementById('infowin');
-        infowin.style.display='none';//关闭窗口
-        infooverlay.style.display='none';
+        infowin.style.display = 'none';//关闭窗口
+        infooverlay.style.display = 'none';
         var searchoverlay = document.getElementById('searchoverlay');
         var searchwin = document.getElementById('searchwin');
-        searchwin.style.display='none';//关闭窗口
-        searchoverlay.style.display='none';
-
+        searchwin.style.display = 'none';//关闭窗口
+        searchoverlay.style.display = 'none';
         var fields = $('#form3').serializeArray();
         var obj = {}; //声明一个对象
-        $.each(fields, function(index, result) {
+        $.each(fields, function (index, result) {
             obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
 
         });
@@ -497,30 +545,38 @@
             //几个参数需要注意一下
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
-            url: "/search2" ,//url
+            url: "/search2",//url
             data: JSON.stringify(obj),
-            async:false,
-            contentType:"application/json",
+            async: false,
+            contentType: "application/json",
             success: function (result) {
                 layer.close(tipMsg);
+                flag1 = $("#searchFlag").val();
+                console.log(flag1);
                 if (result) {
                     init();
-                    createNetwork({nodes:result.nodeList,edges:result.edgeList});
+                    createNetwork({nodes: result.nodeList, edges: result.edgeList});
                 }
             },
-            error : function() {
+            error: function () {
                 alert("异常！");
-                win.style.display='none';//关闭窗口
-                overlay.style.display='none';
+                win.style.display = 'none';//关闭窗口
+                overlay.style.display = 'none';
             }
         });
-        network.on("dragEnd", function(params){
-            if (params.nodes&&params.nodes.length > 0){
-                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
+        network.on("dragEnd", function (params) {
+            if (params.nodes && params.nodes.length > 0) {
+                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
             }
+        });
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            var truthBeTold = window.confirm("是否确定删除？");
+            console.log(truthBeTold);
+            parent.location.reload();
         });
     }
-
 
 
 
@@ -565,45 +621,6 @@
                 network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
             }
         });
-    }
-
-
-
-
-
-    //拓扑
-    var network;
-    // 创建节点对象
-    var nodes;
-    // 创建连线对象
-    var edges;
-    // 已扩展的节点
-    var nodeExtendArr = new Array();
-
-    $(function () {
-        init();
-        //修改初始缩放
-        getData();
-        network.moveTo({scale: 0.8});
-
-
-        //先初始化一个节点
-        $.ajax({
-            url: '/get',
-            async: false,
-            success: function (ret) {
-                if (ret) {
-                    createNetwork({nodes: ret.nodeList});
-                } else {
-                    layer.msg("查询失败");
-                }
-            }
-        });
-        network.on("dragEnd", function (params) {
-            if (params.nodes && params.nodes.length > 0) {
-                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
-            }
-        });
         network.on("doubleClick", function (params) {
             var nodeId = params.nodes[0];
             del(nodeId);
@@ -611,7 +628,10 @@
             console.log(truthBeTold);
             parent.location.reload();
         });
-    });
+    }
+
+
+
 
     function init(){
 
@@ -780,7 +800,7 @@
         }
     }
 
-    $('input[type=checkbox][name=checkbox]').change(function(e) {
+ /*   $('input[type=checkbox][name=checkbox]').change(function(e) {
         for(var i in network.body.data.nodes._data){
             if(network.body.data.nodes._data[i].label.indexOf("title")!=-1 && e.target.value == "Movie" && !e.currentTarget.checked){
                 network.clustering.updateClusteredNode(i, {hidden : true});
@@ -790,7 +810,7 @@
                 network.clustering.updateClusteredNode(i, {hidden : false});
             }
         }
-    });
+    });*/
 
     //根据对象组数中的某个属性值进行过滤删除
     //arrName数组名  field过滤的字段   keyValue字段值
@@ -823,5 +843,4 @@
     }
 
 </script>
-</body>
 </html>
