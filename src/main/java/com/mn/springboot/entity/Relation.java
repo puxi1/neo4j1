@@ -5,6 +5,16 @@ public class Relation {
     Long workid1;
     Long workid2;
 
+    String rsp;
+
+    public String getRsp() {
+        return rsp;
+    }
+
+    public void setRsp(String rsp) {
+        this.rsp = rsp;
+    }
+
     public Long getWorkid1() {
         return workid1;
     }
