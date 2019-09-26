@@ -200,21 +200,21 @@
         <tr>
             <td align="right">员工关系:</td>
             <td>
-                <input type="text" name="relationly">
+                <input type="text" name="rsp">
             </td>
         </tr>
         <br/>
         <tr>
             <td align="right">关系员工A工号:</td>
             <td>
-                <input type="text" name="reworkid1">
+                <input type="text" name="workid1">
             </td>
         </tr>
         <br/>
         <tr>
             <td align="right">关系员工B工号:</td>
             <td>
-                <input type="text" name="reworkid2">
+                <input type="text" name="workid2">
             </td>
         </tr>
         <br/>
@@ -435,6 +435,40 @@
         });
     }
 
+    function relalogin() {
+        var truthBedelpin = window.confirm("是否确定添加关系？");
+        console.log(truthBedelpin);
+        var relation = document.getElementById('relation');
+        var relawin = document.getElementById('relawin');
+        relation.style.display='none';//关闭窗口
+        relawin.style.display='none';
+
+        var fields = $('#form6').serializeArray();
+        var obj = {}; //声明一个对象
+        $.each(fields, function(index, result) {
+            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
+        });
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/addrsp" ,//url
+            data: JSON.stringify(obj),
+            async:false,
+            contentType:"application/json",
+            success: function (result) {
+                if (result) {
+                    alert("添加成功");
+                    parent.location.reload();
+                }
+            },
+            error : function() {
+                alert("异常！");
+                win.style.display='none';//关闭窗口
+                overlay.style.display='none';
+            }
+        });
+    }
 
 
 
@@ -533,40 +567,7 @@
         });
     }
 
-    function relalogin() {
-        var truthBedelpin = window.confirm("是否确定添加关系？");
-        console.log(truthBedelpin);
-        var relation = document.getElementById('relation');
-        var relawin = document.getElementById('relawin');
-        relation.style.display='none';//关闭窗口
-        relawin.style.display='none';
 
-        var fields = $('#form6').serializeArray();
-        var obj = {}; //声明一个对象
-        $.each(fields, function(index, result) {
-            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
-        });
-        $.ajax({
-            //几个参数需要注意一下
-            type: "POST",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "/addrsp" ,//url
-            data: JSON.stringify(obj),
-            async:false,
-            contentType:"application/json",
-            success: function (result) {
-                if (result) {
-                    alert("添加成功");
-                    parent.location.reload();
-                }
-            },
-            error : function() {
-                alert("异常！");
-                win.style.display='none';//关闭窗口
-                overlay.style.display='none';
-            }
-        });
-    }
 
 
 
