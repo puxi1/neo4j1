@@ -99,8 +99,8 @@ public class ImplController {
 
     //创建非默认关系
     @PostMapping("addrsp")
-    public void addrsp(@RequestBody Person person1,@RequestBody Person person2,@RequestParam(value = "relation") String relation){
-        String cql = "merge (:Person{workid:\""+person1.getWorkid()+"\"})-[r:"+relation+"]->(:Person{workid:\""+person2.getWorkid()+"\"})";
+    public void addrsp(@RequestBody Relation relation){
+        String cql = "merge (:Person{workid:\""+relation.getWorkid1()+"\"})-[r]->(:Person{workid:\""+relation.getWorkid1()+"\"})";
         neo4jUtil.add(cql);
     }
 
