@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/vis.js"></script>
+    <link href="css/vis-network.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/layer.js"></script>
+</head>
+<style type="text/css">
+    .network {
+        width: 100%;
+        height: 600px;
+        border: 1px solid lightgray;
+        background-color: #fff;
+    }
+    html,body{height:100%;overflow:hidden;}
+    body,div,h2{margin:0;padding:0;}
+    body{font:12px/1.5 Tahoma;}
+    center{padding-top:10px;}
+    button{cursor:pointer;margin: auto;}
+    #startoverlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);display:none;}
+    #startwin{position:absolute;top:50%;left:50%;width:400px;height:200px;background:#fff;border:4px solid #f90;margin:-102px 0 0 -202px;display:none;}
+    h2{font-size:12px;text-align:right;background:#FC0;border-bottom:3px solid #f90;padding:5px;}
+    h2 span{color:#f90;cursor:pointer;background:#fff;border:1px solid #f90;padding:0 2px;}
+    {text-align-last:justify;text-align:justify;ext-justify:distribute-all-lines;border: 1px solid red;width: 150px;}
+</style>
+<body>
+<div id="startoverlay" >
+</div>
+<div id="startwin" style="display:none">
+    <h2>
+        <span id="startclose">x</span>
+    </h2>
+    <form id="form6">
+        <tr>
+            <td align="right">请输入根结点:</td>
+            <td>
+                <input type="text" name="workid">
+            </td>
+        </tr>
+    </form>
+    <button id="startsubmit" onclick="startlogin()">确定</button>
+    <a type="button" onclick="startlogin()" href="/neo4j.html">确定</a>
+    <td></td>
+    <button id="startclosed" >取消</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    var oDiv13 = document.getElementById('startoverlay');
+    var oDiv14 = document.getElementById('startwin');
+    oDiv13.style.display = 'block';
+    oDiv14.style.display = 'block';
+    function startlogin() {
+
+        var startoverlay = document.getElementById('startoverlay');
+        var startwin = document.getElementById('startwin');
+        startwin.style.display='none';//关闭窗口
+        startoverlay.style.display='none';
+
+
+        var fields = $('#form6').serializeArray();
+        var obj = {}; //声明一个对象
+        $.each(fields, function(index, result) {
+            obj[result.name] = result.value;//通过变量，将属性值，属性一起放到对象中
+
+        });
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/apprsp" ,//url
+            data: JSON.stringify(obj),
+            // data:$('#form1').serializeArray(),
+            async:false,
+            contentType:"application/json",
+            success: function (result) {
+                //打印服务端返回的数据(调试用)
+                if (result) {
+                    window.open(neo);
+                }
+            },
+            error : function() {
+                alert("异常！");
+                // win.style.display='none';//关闭窗口
+                // overlay.style.display='none';
+            }
+        });
+    }
+</script>
+</body>
+</html>
