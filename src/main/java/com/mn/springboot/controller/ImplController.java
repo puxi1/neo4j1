@@ -7,6 +7,7 @@ import com.mn.springboot.utils.Neo4jUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.List;
 import java.util.*;
 
 @RestController
@@ -128,11 +129,19 @@ public class ImplController {
     }
 
     @GetMapping("getPart")
-    public Set<Map<String ,Object>> getPart(){
+    public String getPart() {
         //cql语句
         String cql = "match (m:Department) return m";
-        Set<Map<String ,Object>> nodeList = new HashSet<>();
-        neo4jUtil.getList(cql,nodeList);
-        return nodeList;
+        Set<Map<String, Object>> nodeList = new HashSet<>();
+        neo4jUtil.getList(cql, nodeList);
+        Iterator it = nodeList.iterator();
+        String result = "";
+        int i = 1;
+        while (it.hasNext()) {
+            HashMap<String, String> map = (HashMap<String, String>) it.next();
+            result += "<option value=\"" + i + "\">" + map.get("partname") + "</option>\n";
+            i++;
+        }
+        return result;
     }
 }
