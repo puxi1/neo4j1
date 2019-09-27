@@ -7,10 +7,7 @@ import com.mn.springboot.utils.Neo4jUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class ImplController {
@@ -128,5 +125,14 @@ public class ImplController {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @GetMapping("getPart")
+    public Set<Map<String ,Object>> getPart(){
+        //cql语句
+        String cql = "match (m:Department) return m";
+        Set<Map<String ,Object>> nodeList = new HashSet<>();
+        neo4jUtil.getList(cql,nodeList);
+        return nodeList;
     }
 }
