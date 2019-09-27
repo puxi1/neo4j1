@@ -126,10 +126,12 @@ public class ImplController {
     //创建新部门节点
     @PostMapping("addPart")
     public boolean addPart(@RequestBody Part part){
-        String cql = "match (m:Department{partname:\""+part.getLeader()+"\"}) " +
-                "merge (:Department{partname:\""+part.getPartname()+"\"})-[:belong]->(m)";
+        String cql1 = "merge (:Department{partname:\""+part.getPartname()+"\"})";
+        String cql2 = "match (m:Department{partname:\""+part.getLeader()+"\"}),(n:Department{partname:\""+part.getPartname()+"\"}) " +
+                "merge (n)-[:belong]->(m)";
         try{
-            neo4jUtil.add(cql);
+            neo4jUtil.add(cql1);
+            neo4jUtil.add(cql2);
             return true;
         }catch (Exception e) {
             return false;
