@@ -609,21 +609,6 @@ window.onload = function() {
         }
         return arrName;
     }
-//根据对象数组中的某个属性值获取过滤后的数组
-//arrName数组名  field过滤的字段   keyValue字段值
-    function getArrFromArr(arrName,field,keyValue){
-        var arrReturn=[];
-        if(arrName==null || arrName.length==0){
-            return arrReturn;
-        }
-        var obj;
-        for (var item=0; item< arrName.length;item++){
-            obj=arrName[item];
-            if(obj[field]==keyValue){
-                arrReturn.push(obj);
-            }
-        }
-        return arrReturn;
-    }
+
 
 

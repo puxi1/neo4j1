@@ -4,7 +4,6 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -42,15 +41,6 @@ public class Person {
         this.position = position;
     }
 
-//    public void makeNewFriend(Person person){
-//        if (friends==null){
-//            friends = new HashSet<>();
-//        }
-//        if (friends.contains(person)){
-//            return;
-//        }
-//        friends.add(person);
-//    }
 
     public Long getId() {
         return id;

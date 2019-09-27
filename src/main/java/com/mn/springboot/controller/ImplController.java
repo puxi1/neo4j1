@@ -28,30 +28,15 @@ public class ImplController {
         return retMap;
     }
 
-//    @PostMapping("search1")
-//    public Map<String, Object> search1(@RequestBody Person person){
-//        Map<String, Object> retMap = new HashMap<>();
-//        //cql语句
-//        String cql = "match q=(m{workid: "+person.getWorkid()+"})-[]-() return q";
-//        Set<Map<String ,Object>> nodeList = new HashSet<>();
-//        neo4jUtil.getList(cql,nodeList);
-//        retMap.put("nodeList",nodeList);
-//        return retMap;
-//    }
 
     @PostMapping("search2")
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
-        //cql语句
-//        String cql1 = "match (n)--(l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return n";
-//        String cql2 = "match (l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
         String cql1 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n)--(:Person) return l";
         String cql2 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n:Person) return l";
         String cql3 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n) return l";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         Set<Map<String ,Object>> edgeList = new HashSet<>();
-//        neo4jUtil.getList(cql1,nodeList);
-//        neo4jUtil.getList(cql2,nodeList);
         neo4jUtil.getPathList(cql1,nodeList,edgeList);
         neo4jUtil.getPathList(cql2,nodeList,edgeList);
         neo4jUtil.getPathList(cql3,nodeList,edgeList);
@@ -64,7 +49,6 @@ public class ImplController {
     public Map<String, Object> getPath(){
         Map<String, Object> retMap = new HashMap<>();
         //cql语句  ID()可以获取节点自动生成的id
-//        String cql = "match l=(m)-[]-(n) where ID(m)="+id+" return l";
         String cql = "match l=(m)-[r]-(n) return l";
         //待返回的值，与cql return后的值顺序对应
         Set<Map<String ,Object>> nodeList = new HashSet<>();
@@ -122,7 +106,7 @@ public class ImplController {
     @PostMapping("addPart")
     public boolean addPart(@RequestBody Part part){
         String cql1 = "merge (:Department{partname:\""+part.getPartname()+"\"})";
-        String cql2 = "match (m:Department{partname:\""+part.getLeader()+"\"}),(n:Department{partname:\""+part.getPartname()+"\"}) " +
+        String cql2 = "match (m:Department{partname:\""+part.getSuperior()+"\"}),(n:Department{partname:\""+part.getPartname()+"\"}) " +
                 "merge (n)-[:belong]->(m)";
         try{
             neo4jUtil.add(cql1);
