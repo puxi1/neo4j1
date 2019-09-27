@@ -47,12 +47,14 @@ public class ImplController {
 //        String cql2 = "match (l)--(m:Person{workid: \""+person.getWorkid()+"\"}) return l";
         String cql1 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n)--(:Person) return l";
         String cql2 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n:Person) return l";
+        String cql3 = "match l=(m:Person{workid:\""+person.getWorkid()+"\"})--(n) return l";
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         Set<Map<String ,Object>> edgeList = new HashSet<>();
 //        neo4jUtil.getList(cql1,nodeList);
 //        neo4jUtil.getList(cql2,nodeList);
         neo4jUtil.getPathList(cql1,nodeList,edgeList);
         neo4jUtil.getPathList(cql2,nodeList,edgeList);
+        neo4jUtil.getPathList(cql3,nodeList,edgeList);
         retMap.put("nodeList",nodeList);
         retMap.put("edgeList",edgeList);
         return retMap;
@@ -63,7 +65,7 @@ public class ImplController {
         Map<String, Object> retMap = new HashMap<>();
         //cql语句  ID()可以获取节点自动生成的id
 //        String cql = "match l=(m)-[]-(n) where ID(m)="+id+" return l";
-        String cql = "match l=(m)-[]-(n) return l";
+        String cql = "match l=(m)-[r]-(n) return l";
         //待返回的值，与cql return后的值顺序对应
         Set<Map<String ,Object>> nodeList = new HashSet<>();
         Set<Map<String ,Object>> edgeList = new HashSet<>();
@@ -89,13 +91,6 @@ public class ImplController {
         return retMap;
     }
 
-    @GetMapping("getFields")
-    public Map<String, Object> getFields(){
-        Map<String, Object> retMap = new HashMap<>();
-        String cql = "match (n:Person) return count(n) as cou";
-        retMap.put("fieldList",neo4jUtil.getFields(cql));
-        return retMap;
-    }
 
     //创建非默认关系
     @PostMapping("addrsp")
@@ -147,17 +142,6 @@ public class ImplController {
             neo4jUtil.add(cql2);
             return true;
         }catch (Exception e){
-            return false;
-        }
-    }
-
-    @PostMapping("start")
-    public boolean start(@RequestBody Part part){
-        String cql = "merge (:Department{partname:\""+part.getPartname()+"\"})";
-        try{
-            neo4jUtil.add(cql);
-            return true;
-        }catch (Exception e) {
             return false;
         }
     }

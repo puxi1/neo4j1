@@ -381,17 +381,11 @@
         }
     }
 
-    function deldoubleClick() {
+    function dragEnd() {
         network.on("dragEnd", function (params) {
             if (params.nodes && params.nodes.length > 0) {
                 network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
             }
-        });
-        network.on("doubleClick", function (params) {
-            var nodeId = params.nodes[0];
-            del(nodeId);
-            delcon();
-            parent.location.reload();
         });
     }
 
@@ -545,7 +539,14 @@
                 overlay.style.display='none';
             }
         });
-        deldoubleClick();
+        dragEnd();
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            delcon();
+            infologin();
+        });
+
     }
 
 
@@ -587,8 +588,7 @@
                 overlay.style.display='none';
             }
         });
-       deldoubleClick();
-
+        dragEnd();
     }
 
 
@@ -623,7 +623,13 @@
                 }
             }
         });
-        deldoubleClick();
+        dragEnd();
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            delcon();
+            parent.location.reload();
+        });
     });
 
 
