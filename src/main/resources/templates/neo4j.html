@@ -801,17 +801,6 @@
         }
     }
 
-    $('input[type=checkbox][name=checkbox]').change(function(e) {
-        for(var i in network.body.data.nodes._data){
-            if(network.body.data.nodes._data[i].label.indexOf("title")!=-1 && e.target.value == "Movie" && !e.currentTarget.checked){
-                network.clustering.updateClusteredNode(i, {hidden : true});
-            }else if(network.body.data.nodes._data[i].label.indexOf("name")!=-1 && e.target.value == "Person" && !e.currentTarget.checked){
-                network.clustering.updateClusteredNode(i, {hidden : true});
-            }else{
-                network.clustering.updateClusteredNode(i, {hidden : false});
-            }
-        }
-    });
 
     //根据对象组数中的某个属性值进行过滤删除
     //arrName数组名  field过滤的字段   keyValue字段值
@@ -825,22 +814,6 @@
             }
         }
         return arrName;
-    }
-    //根据对象数组中的某个属性值获取过滤后的数组
-    //arrName数组名  field过滤的字段   keyValue字段值
-    function getArrFromArr(arrName,field,keyValue){
-        var arrReturn=[];
-        if(arrName==null || arrName.length==0){
-            return arrReturn;
-        }
-        var obj;
-        for (var item=0; item< arrName.length;item++){
-            obj=arrName[item];
-            if(obj[field]==keyValue){
-                arrReturn.push(obj);
-            }
-        }
-        return arrReturn;
     }
 
 </script>
