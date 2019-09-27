@@ -127,7 +127,7 @@
             </td>
         </tr>
         <br/>
-        <button id="infosubmit" onclick="infologin()">确定</button>
+        <input type="button" id="infosubmit" name="btn" value="提交" onclick="infologin()"/>
         <td></td>
         <button id="infoclosed" >取消</button>
     </form>
@@ -156,7 +156,7 @@
             </td>
         </tr>
         <br/>
-        <button id="relsubmit" onClick="rellogin()">确定</button>
+        <input type="button" id="relsubmit" name="btn" value="提交" onclick="rellogin()"/>
         <td></td>
         <button id="relclosed" >取消</button>
     </form>
@@ -218,7 +218,7 @@
             </td>
         </tr>
         <br/>
-        <button id="relasubmit" onClick="relalogin()">确定</button>
+        <input type="button" id="relasubmit" name="btn" value="提交" onclick="relalogin()"/>
         <td></td>
         <button id="relaclosed" >取消</button>
     </form>
@@ -361,14 +361,50 @@
 
 
 
+    function con(over,window,msg) {
+        var m1 = document.getElementById(over);
+        var m2 = document.getElementById(window);
+        // var msg = '';
+        if(!confirm(msg))
+        {
+            m2.style.display = 'none';//关闭窗口
+            m1.style.display = 'none';
+            return false;
+        }
+    }
+
+    function delcon() {
+        var msg="是否删除?";
+        if(!confirm(msg))
+        {
+            return false;
+        }
+    }
+
+    function deldoubleClick() {
+        network.on("dragEnd", function (params) {
+            if (params.nodes && params.nodes.length > 0) {
+                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
+            }
+        });
+        network.on("doubleClick", function (params) {
+            var nodeId = params.nodes[0];
+            del(nodeId);
+            delcon();
+            parent.location.reload();
+        });
+    }
 
     function login() {
-        var truthBeLogin = window.confirm("是否确定添加员工？");
-        console.log(truthBeLogin);
-        var overlay = document.getElementById('overlay');
-        var win = document.getElementById('win');
-        win.style.display = 'none';//关闭窗口
-        overlay.style.display = 'none';
+        var overlay = 'overlay';
+        var win = 'win';
+        var msg = "是否确认添加员工?";
+        con(overlay,win,msg);
+
+        // var overlay = document.getElementById('overlay');
+        // var win = document.getElementById('win');
+        // win.style.display = 'none';//关闭窗口
+        // overlay.style.display = 'none';
 
         var fields = $('#form1').serializeArray();
         var obj = {}; //声明一个对象
@@ -400,12 +436,10 @@
     }
 
     function deplogin() {
-        var truthBedelpin = window.confirm("是否确定添加部门？");
-        console.log(truthBedelpin);
-        var depoverlay = document.getElementById('depoverlay');
-        var depwin = document.getElementById('depwin');
-        depwin.style.display='none';//关闭窗口
-        depoverlay.style.display='none';
+        var overlay = 'depoverlay';
+        var win = 'depwin';
+        var msg = "是否确认添加部门?";
+        con(overlay,win,msg);
 
         var fields = $('#form5').serializeArray();
         var obj = {}; //声明一个对象
@@ -436,12 +470,11 @@
     }
 
     function relalogin() {
-        var truthBedelpin = window.confirm("是否确定添加关系？");
-        console.log(truthBedelpin);
-        var relation = document.getElementById('relation');
-        var relawin = document.getElementById('relawin');
-        relation.style.display='none';//关闭窗口
-        relawin.style.display='none';
+        var overlay = 'relaoverlay';
+        var win = 'relawin';
+        var msg = "是否确认添加关系?";
+        con(overlay,win,msg);
+
 
         var fields = $('#form6').serializeArray();
         var obj = {}; //声明一个对象
@@ -506,6 +539,8 @@
                 if (result) {
                     init();
                     createNetwork({nodes:result.nodeList,edges:result.edgeList});
+                    console.log(result);
+
                 }
             },
             error : function() {
@@ -514,11 +549,7 @@
                 overlay.style.display='none';
             }
         });
-        network.on("dragEnd", function(params){
-            if (params.nodes&&params.nodes.length > 0){
-                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
-            }
-        });
+        deldoubleClick();
     }
 
 
@@ -560,11 +591,8 @@
                 overlay.style.display='none';
             }
         });
-        network.on("dragEnd", function(params){
-            if (params.nodes&&params.nodes.length > 0){
-                network.clustering.updateClusteredNode(params.nodes[0], {physics : false});
-            }
-        });
+       deldoubleClick();
+
     }
 
 
@@ -599,19 +627,10 @@
                 }
             }
         });
-        network.on("dragEnd", function (params) {
-            if (params.nodes && params.nodes.length > 0) {
-                network.clustering.updateClusteredNode(params.nodes[0], {physics: false});
-            }
-        });
-        network.on("doubleClick", function (params) {
-            var nodeId = params.nodes[0];
-            del(nodeId);
-            var truthBeTold = window.confirm("是否确定删除？");
-            console.log(truthBeTold);
-            parent.location.reload();
-        });
+        deldoubleClick();
     });
+
+
 
     function init(){
 

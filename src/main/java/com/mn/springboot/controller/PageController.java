@@ -9,7 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class PageController {
     @RequestMapping("index")
     public ModelAndView index(){
+        ModelAndView neo = new ModelAndView("index");
+        return neo;
+    }
+    @RequestMapping("neo4j")
+    public ModelAndView neo4j(){
         ModelAndView neo = new ModelAndView("neo4j");
         return neo;
     }
+
 }
