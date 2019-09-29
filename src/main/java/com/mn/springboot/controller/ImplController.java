@@ -15,6 +15,7 @@ public class ImplController {
     @Autowired
     private Neo4jUtil neo4jUtil;
 
+    //查询所有节点和关系
     @GetMapping("get")
     public Map<String, Object> get(){
         Map<String, Object> retMap = new HashMap<>();
@@ -26,7 +27,7 @@ public class ImplController {
         return retMap;
     }
 
-
+    //查询节点信息和与节点直接相关的节点
     @PostMapping("search2")
     public Map<String, Object> search2(@RequestBody Person person){
         Map<String, Object> retMap = new HashMap<>();
@@ -43,6 +44,7 @@ public class ImplController {
         return retMap;
     }
 
+    //查询关系信息
     @GetMapping("getPath")
     public Map<String, Object> getPath(){
         Map<String, Object> retMap = new HashMap<>();
@@ -115,6 +117,7 @@ public class ImplController {
         }
     }
 
+    //删除节点以及其关系
     @PostMapping("delete")
     public boolean delete(String id){
         String cql1 = "match (n)-[r]-() where ID(n)="+id+" delete r";
@@ -128,6 +131,7 @@ public class ImplController {
         }
     }
 
+    //返回所有的部门节点信息
     @PostMapping("getPart")
     public String getPart() {
         //cql语句

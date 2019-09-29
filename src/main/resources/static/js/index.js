@@ -137,6 +137,16 @@ window.onload = function() {
 
 };
 
+
+    //拓扑
+    var network;
+    // 创建节点对象
+    var nodes;
+    // 创建连线对象
+    var edges;
+    // 已扩展的节点
+    var nodeExtendArr = new Array();
+
     function getPart(){
         $.ajax({
             type: "Post",
@@ -393,14 +403,7 @@ window.onload = function() {
 
 
 
-//拓扑
-    var network;
-// 创建节点对象
-    var nodes;
-// 创建连线对象
-    var edges;
-// 已扩展的节点
-    var nodeExtendArr = new Array();
+
 
     $(function () {
         init();
@@ -422,6 +425,7 @@ window.onload = function() {
             }
         });
         dragEnd();
+        //添加双击删除事件
         network.on("doubleClick", function (params) {
             var nodeId = params.nodes[0];
             if(delcon()==false){return};
@@ -432,6 +436,7 @@ window.onload = function() {
 
 
 
+    //初始化画布
     function init(){
 
         // 创建节点对象
@@ -483,16 +488,13 @@ window.onload = function() {
 
 
 
-//获取id扩展后的数据
+    //获取所有的关系并创建节点
     function getData(){
         var tipMsg = layer.msg('数据加载中，请稍等...', {icon: 16,shade:[0.1,'#000'],time:0,offset:'250px'});
         //该节点已扩展
         // nodeExtendArr.push(id);
         $.ajax({
             url:'/getPath',
-            // data:{
-            //     id:id //当前节点id
-            // },
             success: function(ret) {
                 layer.close(tipMsg);
                 if(ret){
@@ -504,6 +506,7 @@ window.onload = function() {
         });
     }
 
+    //删除节点
     function del(id) {
         nodeExtendArr.push(id);
         $.ajax({
@@ -522,7 +525,8 @@ window.onload = function() {
             }
         });
     }
-//扩展节点 param nodes和relation集合
+
+    //绘制节点和关系
     function createNetwork(param) {
         //可以试试注释掉去重的方法看看效果
         if(param.nodes && param.nodes.length>0){
