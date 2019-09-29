@@ -26,10 +26,12 @@ window.onload = function() {
     var oSpan5 = document.getElementById('relaclose');
 
 
-
     aBtn.onclick = function(){
+
         oDiv1.style.display = 'block';
         oDiv2.style.display = 'block';
+
+
     };
     aBtn1.onclick = function(){
         oDiv3.style.display = 'block';
@@ -135,6 +137,16 @@ window.onload = function() {
 
 };
 
+    function getPart(){
+        $.ajax({
+            type: "Post",
+            url: "/getPart",       //请求后台action 根据需求请求自己的后台数据//预期服务器返回的数据类型
+            success: function (data) {//返回list数据并循环获取
+                console.log(data);
+                $("#getpart").append(data);
+            },
+        });
+    }
 
 
     function con(over,window,msg) {
@@ -143,11 +155,10 @@ window.onload = function() {
         // var msg = '';
         if(!confirm(msg))
         {
-            m2.style.display = 'none';//关闭窗口
-            m1.style.display = 'none';
             return false;
         }
-        parent.location.reload();
+        m2.style.display = 'none';//关闭窗口
+        m1.style.display = 'none';
     }
 
     function delcon() {
@@ -156,7 +167,6 @@ window.onload = function() {
         {
             return false;
         }
-        parent.location.reload();
     }
 
     function dragEnd() {
@@ -167,11 +177,16 @@ window.onload = function() {
         });
     }
 
+
+        //下拉数据加载
+
+
+
     function login() {
         var overlay = 'overlay';
         var win = 'win';
         var msg = "是否确认添加员工?";
-        con(overlay,win,msg);
+        if(con(overlay,win,msg)==false){return};
 
 
         var fields = $('#form1').serializeArray();
@@ -207,8 +222,7 @@ window.onload = function() {
         var overlay = 'depoverlay';
         var win = 'depwin';
         var msg = "是否确认添加部门?";
-        con(overlay,win,msg);
-
+        if(con(overlay,win,msg)==false){return};
         var fields = $('#form5').serializeArray();
         var obj = {}; //声明一个对象
         $.each(fields, function(index, result) {
@@ -241,7 +255,7 @@ window.onload = function() {
         var overlay = 'relaoverlay';
         var win = 'relawin';
         var msg = "是否确认添加关系?";
-        con(overlay,win,msg);
+        if(con(overlay,win,msg)==false){return};
 
 
         var fields = $('#form6').serializeArray();
@@ -320,8 +334,8 @@ window.onload = function() {
         dragEnd();
         network.on("doubleClick", function (params) {
             var nodeId = params.nodes[0];
+            if(delcon()==false){return};
             del(nodeId);
-            delcon();
             infologin();
         });
     }
@@ -368,8 +382,8 @@ window.onload = function() {
         dragEnd();
         network.on("doubleClick", function (params) {
             var nodeId = params.nodes[0];
+            if(con(overlay,win,msg)==false){return};
             del(nodeId);
-            delcon();
             rellogin();
         });
 
@@ -410,8 +424,9 @@ window.onload = function() {
         dragEnd();
         network.on("doubleClick", function (params) {
             var nodeId = params.nodes[0];
+            if(delcon()==false){return};
             del(nodeId);
-            delcon();
+            parent.location.reload();
         });
     });
 
@@ -499,7 +514,6 @@ window.onload = function() {
             },
 
             success: function(ret) {
-                layer.close(tipMsg);
                 if(ret){
                     alert("删除成功");
                 }else{

@@ -128,7 +128,7 @@ public class ImplController {
         }
     }
 
-    @GetMapping("getPart")
+    @PostMapping("getPart")
     public String getPart() {
         //cql语句
         String cql = "match (m:Department) return m";
