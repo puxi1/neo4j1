@@ -262,7 +262,7 @@ window.onload = function() {
     }
 
     function relalogin() {
-        var overlay = 'relaoverlay';
+        var overlay = 'relation';
         var win = 'relawin';
         var msg = "是否确认添加关系?";
         if(con(overlay,win,msg)==false){return};
